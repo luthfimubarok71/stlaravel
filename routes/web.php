@@ -11,8 +11,13 @@ Route::get('/', function () {
 
 Route::get('/posts', function () {
     // $posts = Post::with(['category', 'author'])->latest()->get();
-    $posts = Post::latest()->get();
-    return view('posts', ['title' => 'Blog', 'posts' => $posts]);
+    $posts = Post::latest();
+
+    if (request('keyword')) {
+        $posts->where('title', 'like', '%' . request('keyword') . '%');
+    }
+
+    return view('posts', ['title' => 'Blog', 'posts' => $posts->get()]);
 });
 
 Route::get('/posts/{post:slug}', function (Post $post) {
