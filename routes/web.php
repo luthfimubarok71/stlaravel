@@ -10,7 +10,7 @@ Route::get('/', function () {
 });
 
 Route::get('/posts', function () {
-    $posts = Post::latest()->filter(request(['keyword', 'category', 'author']))->get();
+    $posts = Post::latest()->filter(request(['keyword', 'category', 'author']))->paginate(8)->withQueryString();
 
     return view('posts', ['title' => 'Blog', 'posts' => $posts]);
 });
